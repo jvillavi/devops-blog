@@ -173,8 +173,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-/public/
-/resources/_gen/
+public/
+resources/_gen/
 
 hugo.exe
 hugo.linux
