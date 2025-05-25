@@ -1,0 +1,12 @@
+baseURL = 'https://www.realskynet.com'
+languageCode = 'en-us'
+title = 'My Own Tech Views'
+theme = 'ananke'
+
+[[module.mounts]]
+source = 'static'
+target = 'static'
+
+[[module.mounts]]
+source = 'images'
+target = 'static/images'

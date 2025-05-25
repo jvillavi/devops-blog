@@ -1,0 +1,8 @@
+FROM docker.io/nginx:1.28.0
+
+LABEL maintainer="Jorge Villavicencio <jorge.a.villavicencio@gmail.com>"
+
+COPY public/ /usr/share/nginx/html
+COPY nginx/ /etc/nginx/conf.d
+
+EXPOSE 80

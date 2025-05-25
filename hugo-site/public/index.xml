@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My Own Tech Views</title>
+    <link>https://www.realskynet.com/</link>
+    <description>Recent content on My Own Tech Views</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="https://www.realskynet.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>https://www.realskynet.com/home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://www.realskynet.com/home/</guid>
+      <description>&lt;h1 id=&#34;welcome-to-skynet&#34;&gt;Welcome To Skynet&lt;/h1&gt;&#xA;&lt;h2 id=&#34;my-on-apocalyptic-views-on-technology&#34;&gt;My on apocalyptic views on technology&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://www.realskynet.com/images/skynet-banner.jpg&#34; alt=&#34;My Precious Decadent Machine&#34;&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
