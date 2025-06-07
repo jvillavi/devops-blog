@@ -1,7 +1,17 @@
 # devops-blog
 
-## My Devops misadventures blog
-- by: @jvillavi
+## Overview
+
+devops-blog is a personal blog project documenting Jorge's journey, experiments, and learnings in the world of DevOps. The blog is built using [Hugo](https://gohugo.io) for static site generation and is designed to be deployed in modern cloud-native environments. It covers topics such as containerization, Kubernetes deployments, CI/CD pipelines, infrastructure as code, and GitOps practices.
+
+The project aims to serve as both a technical reference and a record of real-world DevOps challenges and solutions, with a focus on practical implementation and automation.
+
+**Key Features:**
+- Static site generation with Hugo
+- Themed with custom and community Hugo themes
+- Containerized build and deployment using Podman
+- Kubernetes manifests for k3s deployment
+- Infrastructure automation goals (AWS, Terraform, GitOps)
 
 **Main Goals**
 
@@ -26,13 +36,13 @@
 
 **Build Instructions**
 
-1. Cloning the project (with dependencies)
+1. Clone the project (with dependencies):
 
 ```
 git clone $REPO --recurse-submodules
 ```
 
-2. Execute Hugo and make container image
+2. Build the static site and container image:
 
 ```
 cd build
