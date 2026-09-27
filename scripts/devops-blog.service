@@ -1,0 +1,19 @@
+[Unit]
+Description=DevOps Blog (Podman Container)
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+ExecStartPre=-/usr/bin/podman rm -f devops-blog
+ExecStart=/usr/bin/podman run \\
+    --name devops-blog \\
+    --rm \\
+    -p 8081:80 \\
+    localhost/devopsblog:latest
+ExecStop=/usr/bin/podman stop -t 10 devops-blog
+ExecStopPost=-/usr/bin/podman rm -f devops-blog
+
+[Install]
+WantedBy=multi-user.target
