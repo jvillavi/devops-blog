@@ -1,7 +1,7 @@
-baseURL = 'https://www.realskynet.com'
+baseURL = 'http://odesa.local:8081'
 languageCode = 'en-us'
 title = 'My Own Tech Views'
-theme = 'xmin'
+theme = 'papermod'
 
 [[module.mounts]]
 source = 'static'
