@@ -1,52 +1,45 @@
 #!/bin/bash
 
+set -euo pipefail
+
 WELCOME_MSG="jvillavi DevOps Blog"
-HUGO_SITE_PATH="../hugo-site"
-CONTAINERFILE_LOC="../container/Containerfile"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CONTAINERFILE="$PROJECT_ROOT/container/Containerfile"
+IMAGE_NAME="localhost/devopsblog:latest"
 
 # Pre-requisites checks
-is_figlet_available() {
-    figlet -v "$1" >/dev/null 2>&1
-}
+echo "Checking prerequisites..."
 
-is_lolcat_available() {
-    lolcat -v "$1" >/dev/null 2>&1
-}
-
-is_podman_available() {
-    podman -v "$1" >/dev/null 2>&1
-}
-
-if ! is_podman_available; then
+if ! command -v podman >/dev/null 2>&1; then
     echo "😵 Podman is not installed. Please install Podman to continue"
     exit 1
 fi
 
-if is_figlet_available && is_lolcat_available; then
-    figlet $WELCOME_MSG | lolcat
+# Optional: figlet + lolcat for style
+if command -v figlet >/dev/null 2>&1 && command -v lolcat >/dev/null 2>&1; then
+    figlet "$WELCOME_MSG" | lolcat
 else
-    echo $WELCOME_MSG
+    echo "$WELCOME_MSG"
 fi
 
 echo "--------------------------------------------------"
-echo "WORKING DIRECTORY: $(pwd)"
-echo "HUGO SITE PATH: $HUGO_SITE_PATH"
-echo "CONTAINERFILE LOC: $CONTAINERFILE_LOC"
+echo "PROJECT ROOT: $PROJECT_ROOT"
+echo "CONTAINERFILE: $CONTAINERFILE"
+echo "IMAGE: $IMAGE_NAME"
 echo "--------------------------------------------------"
 
+echo "Building multi-stage container image..."
+podman build \
+    -t "$IMAGE_NAME" \
+    -f "$CONTAINERFILE" \
+    "$PROJECT_ROOT"
 
-echo "Building the Hugo site..."
-hugo -D -s $HUGO_SITE_PATH
-if [ $? -ne 0 ]; then
-    echo "😵 Hugo build failed. Please check the output for errors."
-    exit 1
-fi
-
-echo "Building the container image..."
-podman build -t devopsblog -f $CONTAINERFILE_LOC $HUGO_SITE_PATH
-if [ $? -ne 0 ]; then
-    echo "🔥 Podman build failed. Please check the output for errors."
-    exit 1
-fi
-
-# podman run -d -p 8080:80 --name devopsblog localhost/devopsblog
+echo ""
+echo "✅ Build complete!"
+echo ""
+echo "Run locally:"
+echo "  podman run -d -p 8080:80 --name devopsblog $IMAGE_NAME"
+echo ""
+echo "Deploy to k3s:"
+echo "  $SCRIPT_DIR/deploy.sh"

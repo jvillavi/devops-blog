@@ -1,8 +1,16 @@
-FROM docker.io/nginx:1.28.0
+# Stage 1: Build Hugo site
+FROM docker.io/klakegg/hugo:0.119.0-ext-ubuntu AS builder
+
+WORKDIR /src
+COPY hugo-site/ .
+RUN hugo --minify --gc
+
+# Stage 2: Serve with Nginx
+FROM docker.io/nginx:1.28.0-alpine
 
 LABEL maintainer="Jorge Villavicencio <jorge.a.villavicencio@gmail.com>"
 
-COPY public/ /usr/share/nginx/html
-COPY nginx/ /etc/nginx/conf.d
+COPY --from=builder /src/public/ /usr/share/nginx/html
+COPY hugo-site/nginx/ /etc/nginx/conf.d
 
 EXPOSE 80
