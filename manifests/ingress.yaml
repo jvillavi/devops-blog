@@ -4,21 +4,9 @@ metadata:
   name: devops-blog
   labels:
     app: devops-blog
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
   - host: blog.odesa.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: devops-blog
-            port:
-              number: 80
-  - host: blog.local
     http:
       paths:
       - path: /
