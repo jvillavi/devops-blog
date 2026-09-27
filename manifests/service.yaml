@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-blog
+  labels:
+    app: devops-blog
+spec:
+  selector:
+    app: devops-blog
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  type: ClusterIP
