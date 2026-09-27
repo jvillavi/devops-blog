@@ -1,7 +1,7 @@
 baseURL = 'https://www.realskynet.com'
 languageCode = 'en-us'
 title = 'My Own Tech Views'
-theme = 'ananke'
+theme = 'xmin'
 
 [[module.mounts]]
 source = 'static'
