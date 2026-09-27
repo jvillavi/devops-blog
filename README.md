@@ -2,49 +2,94 @@
 
 ## Overview
 
-devops-blog is a personal blog project documenting Jorge's journey, experiments, and learnings in the world of DevOps. The blog is built using [Hugo](https://gohugo.io) for static site generation and is designed to be deployed in modern cloud-native environments. It covers topics such as containerization, Kubernetes deployments, CI/CD pipelines, infrastructure as code, and GitOps practices.
+A personal blog built with Hugo, deployed to a local k3s cluster. Multi-stage container build — no local Hugo binary required.
 
-The project aims to serve as both a technical reference and a record of real-world DevOps challenges and solutions, with a focus on practical implementation and automation.
-
-**Key Features:**
-- Static site generation with Hugo
-- Themed with custom and community Hugo themes
-- Containerized build and deployment using Podman
-- Kubernetes manifests for k3s deployment
-- Infrastructure automation goals (AWS, Terraform, GitOps)
-
-**Main Goals**
-
-| Priority | Task | Completion |
-|----------|------|------------|
-| 1 | Functional blog generation - by hand | ✅ |
-| 2 | Functional container image including static assets | ✅ |
-| 3 | Deployment to k3s | |
-| 4 | Multi-stage containers | |
-| 5 | Full build and deploy pipelines | |
-| 6 | AWS Infrastructure - S3 + CloudFront + Shield | |
-| 7 | Terraform Integration | |
-| 8 | GitOps - Maybe Tekton | |
-
-**Dependencies**
-
-- [Hugo](https://gohugo.io)
-- [Lolcat](https://github.com/busyloop/lolcat)
-- [Figlet](http://www.figlet.org)
-- [Podman](https://podman.io)
-- [Kubectl](https://kubernetes.io/docs/reference/kubectl/)
-
-**Build Instructions**
-
-1. Clone the project (with dependencies):
+## Architecture
 
 ```
-git clone $REPO --recurse-submodules
+hugo-site/          # Hugo source + content
+├── content/        # Blog posts (Markdown)
+├── static/         # Images, assets
+├── themes/         # Hugo themes (Ananke)
+├── nginx/          # Nginx config for serving
+└── config.toml     # Hugo site config
+
+container/
+└── Containerfile    # Multi-stage: Hugo build → Nginx serve
+
+manifests/
+├── deployment.yaml  # k3s Deployment + Service
+└── ingress.yaml     # Traefik Ingress
+
+scripts/
+├── build.sh         # Build container image
+└── deploy.sh        # Deploy to k3s
 ```
 
-2. Build the static site and container image:
+## Prerequisites
 
+- [Podman](https://podman.io) (or Docker)
+- [Kubectl](https://kubernetes.io/docs/reference/kubectl/) (for deployment)
+- Optional: `figlet` + `lolcat` for styled output
+
+## Build
+
+```bash
+# Build the container image (includes Hugo build + Nginx)
+./scripts/build.sh
+
+# Result: localhost/devopsblog:latest
 ```
-cd build
-sh build.sh
+
+## Run Locally
+
+```bash
+# Run container locally
+podman run -d -p 8080:80 --name devopsblog localhost/devopsblog:latest
+
+# Access: http://localhost:8080
 ```
+
+## Deploy to k3s
+
+```bash
+# Load image into k3s (if building locally)
+sudo k3s ctr images import <(podman save localhost/devopsblog:latest --format oci-archive)
+
+# Or push to registry and use that image in manifests
+
+# Deploy
+./scripts/deploy.sh
+
+# Access: http://blog.odesa.local (via Ingress)
+```
+
+## Writing Posts
+
+1. Create Markdown file in `hugo-site/content/posts/`
+2. Include Hugo frontmatter:
+   ```yaml
+   ---
+   title: "Post Title"
+   date: 2024-01-15T10:00:00-05:00
+   draft: false
+   ---
+   ```
+3. Rebuild and redeploy
+
+## Theme
+
+- **Ananke** — Default Hugo theme
+- Configured in `hugo-site/config.toml`
+
+## TODO
+
+- [ ] Add actual blog posts
+- [ ] Configure TLS/HTTPS for Ingress
+- [ ] Add CI/CD pipeline (GitHub Actions)
+- [ ] Add Ansible playbook for bare-metal deployment
+- [ ] Migrate from k3s Traefik to custom ingress controller
+
+## License
+
+Personal use. Content © Jorge Villavicencio.
